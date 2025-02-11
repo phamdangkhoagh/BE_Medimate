@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('notifications', function (Blueprint $table) {
-            $table->integer('notification_id');
+            $table->id('notification_id');
             $table->foreignId('user_id')->constrained('users', 'user_id');
             $table->string('title', 255);
             $table->string('content', 255);
