@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('address', function (Blueprint $table) {
             $table->id('address_id');
-            $table->foreignId('user_id')->constrained('users', 'user_id');
+            $table->foreignId('user_id')->constrained('users','user_id');
             $table->string('user_name');
             $table->string('phone', 10);
             $table->string('ward', 255);
             $table->string('district', 255);
             $table->string('province', 255);
             $table->string('type', 50);
-            $table->integer('is_default', 1);
+            $table->integer('is_default')->default(0);
             $table->string('specific_address', 255);
             $table->integer('status');
             $table->timestamps();

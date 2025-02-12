@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id('order_id');
-            $table->foreignId('user_id')->constrained('users', 'user_id');  
+            $table->foreignId('user_id')->constrained('users','user_id');  
             $table->string('code',20);
-            $table->foreignId('redeemed_coupon_id')->constrained('redeemed_coupons', 'redeemed_coupon_id');  
+            $table->foreignId('redeemed_coupon_id')->constrained('redeemed_coupons','redeemed_coupon_id');  
             $table->string('payment_method',20);
             $table->double('total_coupon_discount');
             $table->double('total_product_discount');

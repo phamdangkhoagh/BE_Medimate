@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('redeemed_coupons', function (Blueprint $table) {
             $table->id('redeemed_coupon_id');
-            $table->foreignId('coupon_id')->constrained('coupon', 'coupon_id');
-            $table->foreignId('user_id')->constrained('users', 'user_id');
+            $table->foreignId('coupon_id')->constrained('coupon','coupon_id');
+            $table->foreignId('user_id')->constrained('users','user_id');
             $table->string('code',20);
-            $table->datetimes('expired_date');
+            $table->dateTime('expired_date');
             $table->integer('status');
             $table->timestamps();
         });
