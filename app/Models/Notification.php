@@ -8,6 +8,10 @@ class Notification extends Model
 {
     protected $table = 'notifications';
     protected $primaryKey = 'notification_id';
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s',
+    ];
     protected $fillable = [
         'user_id',
         'title',

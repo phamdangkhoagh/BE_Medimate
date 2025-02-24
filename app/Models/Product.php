@@ -8,6 +8,10 @@ class Product extends Model
 {
     protected $table = 'products';
     protected $primaryKey = 'product_id';
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s',
+    ];
     protected $fillable = [
         'category_id',
         'unit_id',
