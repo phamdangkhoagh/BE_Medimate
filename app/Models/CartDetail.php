@@ -8,6 +8,10 @@ class CartDetail extends Model
 {
     protected $table = 'cart_detail';
     protected $primaryKey = 'cart_detail_id';
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s',
+    ];
     protected $fillable = [
         'user_id',
         'product_id',

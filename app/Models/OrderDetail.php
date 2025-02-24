@@ -8,6 +8,10 @@ class OrderDetail extends Model
 {
     protected $table = 'order_details';
     protected $primaryKey = 'order_detail_id';
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s',
+    ];
     protected $fillable = [
         'order_id',
         'product_id',
