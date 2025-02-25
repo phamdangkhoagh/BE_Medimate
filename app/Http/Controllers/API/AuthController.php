@@ -16,7 +16,6 @@ class AuthController extends Controller
             'email' => 'required|email:rfc,dns|unique:users',
             'phone' => 'required|numeric|unique:users|digits:10',
             'password' => 'required|string|min:8|confirmed',
-            // 'password_confirm' => 'required|string|same:password',
             'point' => 'nullable|integer',
             'birthday' => 'nullable|date',
             'gender' => 'nullable|integer',
@@ -48,9 +47,38 @@ class AuthController extends Controller
             'message' => 'User registered successfully!',
             'user' => $user,
             'access_token' => $accessToken
-        ], 201);
+        ], 200);
     }
 
-    //Login
+    //Login with email and password
+    public function login(Request $request)
+    {
+        //Validation input
+        $validatedData = $request->validate([
+            'email' => 'required|email:rfc,dns',
+            'password' => 'required|string',
+        ]);
+
+        //if email and password is correct then login
+        if (!auth()->attempt($request->only(['email', 'password']))) {
+            return response()->json([
+                'message' => 'Invalid credentials',
+            ], 401);
+        }
+
+        // Get authenticated user
+        $user = auth()->user();
+
+        $accessToken =  $user->createToken('authToken')->plainTextToken;
+
+        return response()->json([
+            'message' => 'User logged in successfully!',
+            'user' => $user,
+            'access_token' => $accessToken
+        ], 200);
+    }
+    
+    //Login with phone
+    //Login with google
     //Logout 
 }
