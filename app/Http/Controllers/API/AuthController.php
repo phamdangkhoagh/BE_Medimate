@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -22,8 +24,8 @@ class AuthController extends Controller
             'role' => 'nullable|string|in:customer,admin',
             'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);
-
-        $validatedData['password'] = bcrypt($validatedData['password']);
+        
+        $validatedData['password'] = Hash::make($validatedData['password']);
 
         // Handle image upload
         if ($request->hasFile('image')) {
@@ -66,8 +68,7 @@ class AuthController extends Controller
             ], 401);
         }
 
-        // Get authenticated user
-        $user = auth()->user();
+        $user = Auth::user();
 
         $accessToken =  $user->createToken('authToken')->plainTextToken;
 
@@ -79,6 +80,12 @@ class AuthController extends Controller
     }
     
     //Login with phone
-    //Login with google
     //Logout 
+    public function logout (Request $request){
+        // Revoke the token that was used to authenticate the current request
+        $request->user()->currentAccessToken()->delete();
+        return response()->json([
+            'message' => 'User logged out successfully!',
+        ], 200);
+    }
 }

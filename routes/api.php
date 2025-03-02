@@ -14,7 +14,7 @@ Route::get('/auth/google', [SocialAuthController::class, 'redirectToGoogle']);
 Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
-
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
 
 // Route::post('/login', function (Request $request) {
