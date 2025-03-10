@@ -4,17 +4,26 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\SocialAuthController;
+use App\Http\Controllers\API\CartController;
+
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
 // })->middleware('auth:sanctum');
-Route::post('/register', [AuthController::class, 'register']); 
-Route::post('/login', [AuthController::class, 'login']); 
 
-Route::get('/auth/google', [SocialAuthController::class, 'redirectToGoogle']);
-Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback']);
+Route::post('v0/register', [AuthController::class, 'register']); 
+Route::post('v0/login', [AuthController::class, 'login']); 
+
+Route::get('v0/auth/google', [SocialAuthController::class, 'redirectToGoogle']);
+Route::get('v0/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('v0/logout', [AuthController::class, 'logout']);
+
+    //Cart 
+    Route::post('v0/carts/items', [CartController::class,'addItemToCart']);
+    Route::put('v0/cart-items/{cartItem}', [CartController::class,'updateItemCart']);
+    Route::delete('v0/cart-items/{cartItem}', [CartController::class,'deleteItemCart']);
+    
 });
 
 // Route::post('/login', function (Request $request) {
