@@ -12,11 +12,13 @@ class CartDetail extends Model
         'created_at' => 'datetime:Y-m-d H:i:s',
         'updated_at' => 'datetime:Y-m-d H:i:s',
     ];
+
     protected $fillable = [
         'user_id',
         'product_id',
         'quantity',
     ];
+    
     public $timestamps = true;
     public function product()
     {
