@@ -16,14 +16,14 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users','user_id');  
             $table->string('code',20);
             $table->foreignId('redeemed_coupon_id')->constrained('redeemed_coupons','redeemed_coupon_id');  
-            $table->string('payment_method',20);
+            $table->enum('payment_method', ['credit_card', 'COD','banking'])->default('COD');
             $table->double('total_coupon_discount');
             $table->double('total_product_discount');
             $table->string('note');
             $table->integer('point');
             $table->double('total');
             $table->string('user_address',255);
-            $table->integer('status');
+            $table->enum('status', ['pending', 'processing','delivered','refunded','canceled'])->default('pending');
             $table->timestamps();
         });
     }

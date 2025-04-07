@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class OrderDetail extends Model
 {
-    protected $table = 'order_details';
+    protected $table = 'order_detail';
     protected $primaryKey = 'order_detail_id';
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',
