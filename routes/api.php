@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\SocialAuthController;
 use App\Http\Controllers\API\CartController;
+use App\Http\Controllers\API\OrderController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -24,6 +25,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('v0/cart-items/{cartItem}', [CartController::class,'updateItemCart']);
     Route::delete('v0/cart-items/{cartItem}', [CartController::class,'deleteItemCart']);
     
+    //Order
+    Route::get('v0/orders',[OrderController::class,'getAllOrders']);
+    Route::post('v0/orders',[OrderController::class,'createOrder']);
+    Route::put('v0/orders/{orderId}',[OrderController::class,'updateOrder']);
+
 });
 
 // Route::post('/login', function (Request $request) {
