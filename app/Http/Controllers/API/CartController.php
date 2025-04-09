@@ -6,7 +6,34 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\CartDetail;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Info(
+ *     title="Your Project API",
+ *     version="1.0.0",
+ *     description="API documentation with Swagger"
+ * )
+ */
+/**
+ * @OA\Post(
+ *     path="v0/carts/items",
+ *     summary="Add item to cart",
+ *     tags={"carts"},
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"product_id", "quantity"},
+ *             @OA\Property(property="product_id", type="integer", example=1),
+ *             @OA\Property(property="quantity", type="integer", example=2)
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Item added to cart successfully"
+ *     )
+ * )
+ */
 class CartController extends Controller
 {
     public function addItemToCart(Request $request)
@@ -90,15 +117,16 @@ class CartController extends Controller
         }
     }
 
-    public function deleteItemCart(Request $request, CartDetail $cartItem){
+    public function deleteItemCart(Request $request, CartDetail $cartItem)
+    {
         try {
 
             // Get authenticated user
             $user = $request->user();
 
             // Verify that the cart item belongs to the authenticated user
-            if ($cartItem->user_id !== $user->user_id){
-                return response()->json(['message' => 'Unauthenticated'],403);
+            if ($cartItem->user_id !== $user->user_id) {
+                return response()->json(['message' => 'Unauthenticated'], 403);
             }
 
             // Delete the cart item 
@@ -109,9 +137,8 @@ class CartController extends Controller
                 'message' => 'Cart item deleted successfully',
                 'cart_item' => $cartItem
             ], 200);
-
-        } catch(ModelNotFoundException $e){
+        } catch (ModelNotFoundException $e) {
             return response()->json(['message' => 'Cart item not found.'], 404);
         }
-    } 
+    }
 }
