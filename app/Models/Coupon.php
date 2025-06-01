@@ -21,4 +21,7 @@ class Coupon extends Model
         'status',
     ];
     public $timestamps = true;
+    public function redeemedCoupons(){
+        return $this->hasMany('App\Models\RedeemedCoupon', 'coupon_id', 'coupon_id');
+    }
 }

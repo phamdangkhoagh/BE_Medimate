@@ -7,6 +7,7 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\SocialAuthController;
 use App\Http\Controllers\API\CartController;
 use App\Http\Controllers\API\OrderController;
+use App\Http\Controllers\API\UserActivityController;
 use OpenApi\Annotations as OA;
 
 /**
@@ -46,6 +47,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('v0/address/{addressId}',[AddressController::class,'updateAddress']);
     Route::delete('v0/address/{address}',[AddressController::class,'deleteAddress']);
 
+    //Accumulate
+    Route::post('v0/accummulate-point',[UserActivityController::class,'getPoint']);
 });
 
 // Route::post('/login', function (Request $request) {

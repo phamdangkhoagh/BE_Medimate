@@ -22,7 +22,7 @@ class OrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code' => 'required|string|max:255',
+            'code' => 'nullable|string|max:255',
             'redeemed_coupon_id' => 'nullable|exists:coupon,coupon_id',
             'payment_method' => 'required|in:credit_card,COD,banking',
             'total_coupon_discount' => 'required|numeric|min:0',
@@ -35,7 +35,7 @@ class OrderRequest extends FormRequest
             'items' => 'required|array', // Array of products
             'items.*.product_id' => 'required|exists:products,product_id',
             'items.*.product_price' => 'required|numeric|min:0',
-            'items.*.discount_price' => 'required|numeric|min:0',
+            'items.*.discount_percent' => 'required|numeric|min:0',
             'items.*.quantity' => 'required|integer|min:1',
         ];
     }
