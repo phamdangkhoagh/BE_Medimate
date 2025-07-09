@@ -172,7 +172,7 @@ class OrderController extends Controller
             $coupon = $this->checkCouponIfExist($validatedData);
 
             DB::beginTransaction();
-
+            
             // Update the order with provided data
             $order->update([
                 'redeemed_coupon_id' => $validatedData['redeemed_coupon_id'],
