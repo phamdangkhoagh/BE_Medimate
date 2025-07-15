@@ -10,8 +10,10 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\RedeemedCoupon;
+use App\Models\User;
 use App\Traits\GenerateOrderCode;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -155,11 +157,12 @@ class OrderController extends Controller
                 'total' => 'nullable|integer',
                 'point' => 'nullable|integer|min:0',
                 'user_address' => 'nullable|string|max:500',
-                'items' => 'required|array', // Array of products
+                'items' => 'required|array', 
                 'items.*.product_id' => 'required|exists:products,product_id',
                 'items.*.product_price' => 'required|numeric|min:0',
                 'items.*.discount_percent' => 'required|numeric|min:0',
                 'items.*.quantity' => 'required|integer|min:1',
+                'status' => 'nullable|in:pending,processing,delivered,completely,refunded,canceled',
             ]);
 
             $order = Order::find($orderId);
@@ -172,7 +175,9 @@ class OrderController extends Controller
             $coupon = $this->checkCouponIfExist($validatedData);
 
             DB::beginTransaction();
-            
+
+            $point = $this->calPoint($validatedData) ?? $order->point;
+
             // Update the order with provided data
             $order->update([
                 'redeemed_coupon_id' => $validatedData['redeemed_coupon_id'],
@@ -180,9 +185,10 @@ class OrderController extends Controller
                 'total_coupon_discount' => $this->calTotalCouponDiscount($validatedData) ?? 0,
                 'total_product_discount' => $this->calTotalProductDiscount($validatedData) ?? 0,
                 'note' => $validatedData['note'] ?? $order->note,
-                'point' => $this->calPoint($validatedData) ?? $order->point,
+                'point' => $point,
                 'total' => $this->calAllCost($validatedData) ?? $order->total,
                 'user_address' => $validatedData['user_address'] ?? $order->user_address,
+                'status' => $validatedData['status']
             ]);
 
             //Update or insert order details if items are provided
@@ -202,6 +208,13 @@ class OrderController extends Controller
                     ];
                 }
                 OrderDetail::insert($orderDetails);
+            }
+                
+            //Update point user
+            if ($validatedData['status'] === 'completely'){
+                $user->update(['point' => $point]);
+            }else {
+                Log::info('Order not completely, no points added.');
             }
 
             DB::commit();
@@ -285,7 +298,7 @@ class OrderController extends Controller
             $total = 0;
             foreach ($validatedData['items'] as $item) {
                 $price = $item['product_price'];
-                $dicountPercent = $this->checkCouponIfExist($validatedData) ?? 0;
+                $dicountPercent = $coupon ?? 0;
                 $discountAmount = ($price * $dicountPercent) / 100;
                 $total += $discountAmount * $item['quantity'];
             }

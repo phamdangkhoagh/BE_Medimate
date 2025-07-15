@@ -31,7 +31,7 @@ class OrderRequest extends FormRequest
             'point' => 'required|integer|min:0',
             'total' => 'required|numeric|min:0',
             'user_address' => 'required|string|max:500',
-            'status' => 'required|in:pending,processing,delivered,refunded,canceled',
+            'status' => 'required|in:pending,processing,delivered,completely,refunded,canceled',
             'items' => 'required|array', // Array of products
             'items.*.product_id' => 'required|exists:products,product_id',
             'items.*.product_price' => 'required|numeric|min:0',
