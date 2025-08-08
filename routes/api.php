@@ -7,6 +7,7 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\SocialAuthController;
 use App\Http\Controllers\API\CartController;
 use App\Http\Controllers\API\OrderController;
+use App\Http\Controllers\API\PromotionController;
 use App\Http\Controllers\API\UserActivityController;
 use OpenApi\Annotations as OA;
 
@@ -49,6 +50,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     //Accumulate
     Route::post('v0/accummulate-point',[UserActivityController::class,'getPoint']);
+
+    //Promotion
+    Route::get('v0/promotion/{userId}',[PromotionController::class,'getUserPromotion']);
+    Route::post('v0/promotion/{userId}',[PromotionController::class,'redeemCouponWithPoints']);
 });
 
 // Route::post('/login', function (Request $request) {
